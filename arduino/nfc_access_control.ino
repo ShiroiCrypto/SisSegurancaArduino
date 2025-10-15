@@ -14,11 +14,16 @@
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 // Lista de UIDs autorizados
-String autorizados[] = {
-  "BA2CFE03"   // ✅ Cartão branco autorizado
+const char* autorizados[] = {
+  "BA2CFE03", // Cartão branco
+  // "12345678", // Adicione outros UIDs aqui
 };
 
-// --- Função de beep com frequência alta ---
+String ultimoUID = "";
+unsigned long ultimaLeitura = 0;
+const unsigned long intervaloLeitura = 1000; // 1 segundo entre leituras
+
+// Função de beep com frequência alta
 void beep(int vezes, int duracao = 150, int pausa = 100, int frequencia = 2000) {
   for (int i = 0; i < vezes; i++) {
     tone(BUZZER, frequencia);
@@ -42,33 +47,33 @@ void setup() {
   digitalWrite(LED_VERMELHO, LOW);
   digitalWrite(LED_AMARELO, LOW);
 
-  // Animação inicial no console
-  Serial.println("🔒 Sistema de Controle de Acesso NFC 🚀");
-  Serial.println("=================================");
+  // Animação inicial
+  Serial.println("INIT:Sistema iniciado");
   for (int i = 0; i < 2; i++) {
     digitalWrite(LED_AMARELO, HIGH);
     beep(1, 100, 100, 2500);
-    Serial.println("🟡 Inicializando...");
     delay(100);
     digitalWrite(LED_AMARELO, LOW);
     delay(100);
   }
-  Serial.println("✅ Sistema pronto! Aproxime o cartão... 😎");
-  Serial.println("=================================");
-  Serial.println("INIT:Sistema iniciado");
+  Serial.println("READY:Sistema pronto");
   digitalWrite(LED_AMARELO, HIGH);
 }
 
 void loop() {
+  // Verifica se há um novo cartão
   if (!mfrc522.PICC_IsNewCardPresent() || !mfrc522.PICC_ReadCardSerial()) {
+    return;
+  }
+
+  // Evita leituras repetidas
+  if (millis() - ultimaLeitura < intervaloLeitura) {
     return;
   }
 
   // Indica leitura
   digitalWrite(LED_AMARELO, LOW);
   beep(1, 150, 100, 2500);
-  Serial.println("=================================");
-  Serial.println("📶 Cartão detectado! Lendo... 🔍");
   Serial.println("LENDO:Cartão detectado");
 
   // Captura o UID
@@ -79,40 +84,39 @@ void loop() {
   }
   uidString.toUpperCase();
 
-  Serial.print("🔑 UID: ");
-  Serial.println(uidString);
-  Serial.print("UID:");
-  Serial.println(uidString);
+  // Evita spam do mesmo UID
+  if (uidString == ultimoUID && millis() - ultimaLeitura < 5000) {
+    mfrc522.PICC_HaltA();
+    return;
+  }
+
+  ultimoUID = uidString;
+  ultimaLeitura = millis();
 
   // Verifica se está autorizado
   bool autorizado = false;
-  for (String id : autorizados) {
-    if (uidString == id) {
+  for (unsigned int i = 0; i < sizeof(autorizados) / sizeof(autorizados[0]); i++) {
+    if (uidString == autorizados[i]) {
       autorizado = true;
       break;
     }
   }
 
   if (autorizado) {
-    Serial.println("✅ Acesso AUTORIZADO! 🎉");
     Serial.println("AUTORIZADO:Acesso permitido");
     digitalWrite(LED_VERDE, HIGH);
-    beep(3, 200, 150, 3000);  // 3 bipes altos
+    beep(3, 200, 150, 3000);
     delay(2000);
     digitalWrite(LED_VERDE, LOW);
   } else {
-    Serial.println("❌ Acesso NEGADO! 🚨");
     Serial.println("NEGADO:Acesso negado");
     digitalWrite(LED_VERMELHO, HIGH);
-    beep(2, 300, 150, 1800);  // 2 bipes graves
+    beep(2, 300, 150, 1800);
     delay(2000);
     digitalWrite(LED_VERMELHO, LOW);
   }
 
-  Serial.println("🟡 Sistema pronto para nova leitura... 😎");
   Serial.println("READY:Sistema pronto");
-  Serial.println("=================================");
   digitalWrite(LED_AMARELO, HIGH);
-  mfrc522.PICC_HaltA(); // Para a leitura do cartão atual
-  delay(500); // Evita leituras duplicadas
+  mfrc522.PICC_HaltA();
 }
