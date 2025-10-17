@@ -1,3 +1,16 @@
+"""
+Sistema NFC Minecraft – Arco-íris com estrelas de vidro
+
+Autores:
+- Matheus Gustavo (ShiroiCrypto)
+- Davi Moreno (Retr0DedSec0)
+
+Descrição:
+  Constrói um arco-íris nas cores roxo, azul e rosa com camadas e adiciona
+  estrelas de vidro iluminadas ao redor. Integra com Arduino via Serial e
+  Minecraft via RaspberryJuice.
+"""
+
 import csv
 from datetime import datetime
 import mcpi.minecraft as minecraft

@@ -96,3 +96,13 @@ Estes scripts funcionam como unidades modulares, ativando ou desativando uma con
 | `estrela_nfc.py` | Sistema de ativação por NFC para construir/destruir uma estrela. |
 | `rainbow_nfc.py` | Sistema de ativação por NFC para construir/destruir um arco-íris. |
 | `logs/` | Diretório onde os arquivos CSV de log são armazenados. |
+
+## 👥 Créditos
+
+- Matheus Gustavo (ShiroiCrypto)
+- Davi Moreno (Retr0DedSec0)
+- Davi Franklin (dvfrnkln)
+
+## 🤝 Contribuindo
+
+Veja o arquivo `CONTRIBUTING.md` para guia de estilo de código, convenções e como abrir PRs.

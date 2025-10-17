@@ -1,3 +1,16 @@
+"""
+Sistema NFC Minecraft – Apresentação completa (Arco-íris → Estrela → Encenação)
+
+Autores:
+- Matheus Gustavo (ShiroiCrypto)
+- Davi Moreno (Retr0DedSec0)
+
+Descrição:
+  Orquestra a demonstração completa do projeto em três atos, com mensagens
+  e pausas para leitura. Depende das mesmas integrações Serial (Arduino)
+  e RaspberryJuice (Minecraft).
+"""
+
 import csv
 from datetime import datetime
 import mcpi.minecraft as minecraft

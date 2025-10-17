@@ -1,3 +1,16 @@
+/*
+  Sistema NFC Minecraft – Firmware Arduino (RC522)
+
+  Autores:
+  - Matheus Gustavo (ShiroiCrypto)
+  - Davi Moreno (Retr0DedSec0)
+
+  Descrição:
+    Lê cartões NFC (RC522) e envia estados via Serial para o sistema Python
+    que controla construções no Minecraft com RaspberryJuice. Indica estados
+    com LEDs e buzzer.
+*/
+
 #include <SPI.h>
 #include <MFRC522.h>
 

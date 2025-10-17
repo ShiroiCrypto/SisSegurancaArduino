@@ -1,3 +1,16 @@
+"""
+Sistema NFC Minecraft – Encenação com porta, arco-íris e estrela
+
+Autores:
+- Matheus Gustavo (ShiroiCrypto)
+- Davi Moreno (Retr0DedSec0)
+
+Descrição:
+  Executa uma sequência dramatizada: criação e abertura de porta, criação de
+  arco-íris e estrela, e fechamento da porta. Inclui mensagens e tempos para
+  leitura durante a apresentação.
+"""
+
 import csv
 from datetime import datetime
 import mcpi.minecraft as minecraft
